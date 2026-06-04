@@ -1,6 +1,9 @@
+import { sendWelcomeEmail } from "../emails/emailHandlers.js";
+import { ENV } from "../lib/env.js";
 import { generateToken } from "../lib/utils.js";
 import User from "../models/User.js";
 import bycrypt from "bcryptjs";
+
 
 export const signup = async (req, res)=>{
     const {fullName, email, password} = req.body;
@@ -32,8 +35,8 @@ I       }
         });
 
         if(newUser){
-            generateToken(newUser._id, res);
-            await newUser.save();
+            const savedUser = await newUser.save();
+            generateToken(savedUser._id, res);
 
             res.status(201).json({
                 _id: newUser._id,
@@ -41,6 +44,12 @@ I       }
                 email: newUser.email,
                 profilePic: newUser.profilePic
             })
+
+            try{
+                await sendWelcomeEmail(savedUser.email, savedUser.fullName, ENV.CLIENT_URL);
+            } catch (error) {
+                console.error("Error sending welcome email:", error);
+            }
         }
 
     }catch(err){
