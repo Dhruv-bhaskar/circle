@@ -63,7 +63,7 @@ const SignUpPage = () => {
 
                   {/* EMAIL */}
                   <div>
-                    <label className="auth-input-label">Full Name</label>
+                    <label className="auth-input-label">Email</label>
                     <div className="relative">
                       <MailIcon className="auth-input-icon" />
 
@@ -81,7 +81,7 @@ const SignUpPage = () => {
 
                   {/* PASSWORD */}
                   <div>
-                    <label className="auth-input-label">Full Name</label>
+                    <label className="auth-input-label">Password</label>
                     <div className="relative">
                       <LockIcon className="auth-input-icon" />
 
