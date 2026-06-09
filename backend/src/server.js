@@ -5,11 +5,13 @@ import messageRoutes from "./routes/message.route.js";
 import { connectDB } from "./lib/db.js";
 import cookieParser from "cookie-parser";
 import { ENV } from "./lib/env.js";
+import cors from "cors";
 
 const PORT = ENV.PORT || 3000;
 const app = express();
 
 app.use(express.json()) //req.body
+app.use(cors({origin: ENV.CLIENT_URL, credentials: true})) //allow cookies from client
 app.use(cookieParser()) //req.cookies
 
 app.use("/api/auth", authRoutes);
