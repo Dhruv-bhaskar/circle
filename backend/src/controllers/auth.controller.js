@@ -67,7 +67,6 @@ export const login = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    console.log("Login route hit");
     const user = await User.findOne({ email });
     if (!user) return res.status(400).json({ message: "Invalid Credentials" });
 
