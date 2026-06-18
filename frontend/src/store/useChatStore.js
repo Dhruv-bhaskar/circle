@@ -1,54 +1,57 @@
-import {create} from 'zustand'
-import { axiosInstance } from '../lib/axios';
-import toast from 'react-hot-toast';
+import { create } from "zustand";
+import { axiosInstance } from "../lib/axios";
+import toast from "react-hot-toast";
+import { useAuthStore } from "./useAuthStore";
 
-export const useChatStore = create((set, get)=>({
-    allContacts: [],
-    chats: [],
-    messages: [],
-    activeTab: "chats",
-    selectedUser: null,
-    isUserLoading: null,
-    isMessageLoading: false,
-    isSoundEnabled: JSON.parse(localStorage.getItem("isSoundEnabled")) === true,
+export const useChatStore = create((set, get) => ({
+  allContacts: [],
+  chats: [],
+  messages: [],
+  activeTab: "chats",
+  selectedUser: null,
+  isUserLoading: null,
+  isMessageLoading: false,
+  isSoundEnabled: JSON.parse(localStorage.getItem("isSoundEnabled")) === true,
 
-    toggleSound: ()=>{
-        localStorage.setItem("isSoundEnabled", !get().isSoundEnabled);
-        set({isSoundEnabled: !get().isSoundEnabled})
-    },
+  toggleSound: () => {
+    localStorage.setItem("isSoundEnabled", !get().isSoundEnabled);
+    set({ isSoundEnabled: !get().isSoundEnabled });
+  },
 
-    setActiveTab: (tab)=>{
-        set({activeTab: tab})
-    },
+  setActiveTab: (tab) => {
+    set({ activeTab: tab });
+  },
 
-    setSelectedUser: (selectedUser)=>{set({selectedUser})},
+  setSelectedUser: (selectedUser) => {
+    set({ selectedUser });
+  },
 
-    getAllContacts: async ()=>{
-        set({isUserLoading: true})
-        try{
-            const res = await axiosInstance.get("/messages/contacts");
-            set({allContacts: res.data})
-        }catch(err){
-            console.log("Error in Fetching Contacts", err);
-            toast.error(err.response.data.message)
-        }finally{
-            set({isUserLoading: false})
-        }
-    },
-    getMyChatPartners: async ()=>{
-        set({isUserLoading: true})
-        try{
-            const res = await axiosInstance.get("/messages/chats");
-            set({chats: res.data})
-        }catch(err){
-            console.log("Error in Fetching Chats", err);
-            toast.error(err.response.data.message)
-        }finally{
-            set({isUserLoading: false})
-        }
-    },
+  getAllContacts: async () => {
+    set({ isUserLoading: true });
+    try {
+      const res = await axiosInstance.get("/messages/contacts");
+      set({ allContacts: res.data });
+    } catch (err) {
+      console.log("Error in Fetching Contacts", err);
+      toast.error(err.response.data.message);
+    } finally {
+      set({ isUserLoading: false });
+    }
+  },
+  getMyChatPartners: async () => {
+    set({ isUserLoading: true });
+    try {
+      const res = await axiosInstance.get("/messages/chats");
+      set({ chats: res.data });
+    } catch (err) {
+      console.log("Error in Fetching Chats", err);
+      toast.error(err.response.data.message);
+    } finally {
+      set({ isUserLoading: false });
+    }
+  },
 
-    getMessagesByUserId: async (userId) => {
+  getMessagesByUserId: async (userId) => {
     set({ isMessagesLoading: true });
     try {
       const res = await axiosInstance.get(`/messages/${userId}`);
@@ -58,16 +61,36 @@ export const useChatStore = create((set, get)=>({
     } finally {
       set({ isMessagesLoading: false });
     }
-    },
+  },
 
-    sendMessage: async (messageData) => {
-      const {selectedUser, messages} = get();
+  sendMessage: async (messageData) => {
+    const { selectedUser, messages } = get();
+    const { authUser } = useAuthStore.getState();
 
-      try{
-        const res = await axiosInstance.post(`/messages/send/${selectedUser._id}`, messageData);
-        set({messages: messages.concat(res.data)})
-      }catch(err){
-        toast.error(err.response?.data?.message || "Something went wrong")
-      }
-    },
-}))
+    const tempId = `temp-${Date.now()}`;
+
+    const optimisticMessage = {
+      _id: tempId,
+      senderId: authUser._id,
+      receiverId: selectedUser._id,
+      text: messageData.text,
+      image: messageData.image,
+      createdAt: new Date().toISOString(),
+      isOptimistic: true, // flag to identify optimistic messages (optional)
+    };
+    // immidetaly update the ui by adding the message
+    set({ messages: [...messages, optimisticMessage] });
+
+    try {
+      const res = await axiosInstance.post(
+        `/messages/send/${selectedUser._id}`,
+        messageData,
+      );
+      set({ messages: messages.concat(res.data) });
+    } catch (err) {
+      //removes optimisticMessage on faliure
+      set({messages: messages})
+      toast.error(err.response?.data?.message || "Something went wrong");
+    }
+  },
+}));
