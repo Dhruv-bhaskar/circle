@@ -20,7 +20,11 @@ const ChatContainer = () => {
  
   useEffect(() => {
     getMessagesByUserId(selectedUser._id);
-  }, [selectedUser, getMessagesByUserId]);
+    subscribeToMessages()
+
+    //clean up
+    return () => unsubscribeFromMessages(); 
+  }, [selectedUser, getMessagesByUserId, subscribeToMessages, unsubscribeFromMessages]);
 
   useEffect(() => {
     if (messageEndRef.current) {

@@ -6,9 +6,9 @@ import { connectDB } from "./lib/db.js";
 import cookieParser from "cookie-parser";
 import { ENV } from "./lib/env.js";
 import cors from "cors";
+import { app, server } from "./lib/socket.js";
 
 const PORT = ENV.PORT || 3000;
-const app = express();
 
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
@@ -18,7 +18,7 @@ app.use(cookieParser()) //req.cookies
 app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`server running on port ${PORT}`);
   connectDB();
 });
