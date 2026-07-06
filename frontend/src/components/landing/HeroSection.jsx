@@ -1,5 +1,3 @@
-// components/landing/HeroSection.jsx
-
 import { Link } from "react-router";
 import { ArrowRight } from "lucide-react";
 
@@ -11,10 +9,8 @@ export default function HeroSection() {
       <div className="absolute bottom-10 right-20 w-72 h-72 bg-cyan-500/20 blur-[120px] rounded-full" />
 
       <div className="relative max-w-7xl w-full mx-auto px-6 lg:px-12 grid lg:grid-cols-2 gap-16 items-center">
-
         {/* LEFT */}
         <div>
-
           <span className="px-4 py-2 rounded-full border border-cyan-500/30 bg-cyan-500/10 text-cyan-400 text-sm">
             Real Time Messaging Platform
           </span>
@@ -27,13 +23,12 @@ export default function HeroSection() {
           </h1>
 
           <p className="mt-8 text-slate-400 text-lg max-w-xl leading-relaxed">
-            Fast, secure and beautiful conversations built for everyday
+            Fast, secure and built for everyday
             communication. Chat with friends instantly, share images and
             experience real-time messaging without distractions.
           </p>
 
           <div className="mt-10 flex flex-wrap gap-4">
-
             <Link
               to="/signup"
               className="btn bg-cyan-500 hover:bg-cyan-400 border-none text-white px-8"
@@ -44,55 +39,34 @@ export default function HeroSection() {
 
             <Link
               to="/login"
-              className="btn btn-outline border-slate-600 text-white hover:bg-slate-800"
+              className="btn btn-outline border-slate-600 text-white hover:bg-blue-200/20 hover:text-white"
             >
               Sign In
             </Link>
-
           </div>
-
         </div>
 
         {/* RIGHT */}
 
         <div className="flex justify-center">
-
           <div className="relative">
-
             <div className="absolute inset-0 bg-cyan-500/20 blur-[80px] rounded-full"></div>
 
             <div className="relative w-[350px] h-[350px] rounded-full border border-cyan-500/20 bg-slate-900/40 backdrop-blur-xl flex items-center justify-center">
-
               <div className="absolute w-[250px] h-[250px] rounded-full border border-cyan-500/30 animate-pulse"></div>
 
               <div className="absolute w-[170px] h-[170px] rounded-full border border-cyan-400/40"></div>
 
-              <div className="text-center">
-
+              <div className="text-center mt-8">
                 <div className="w-20 h-20 rounded-full bg-cyan-500/10 border border-cyan-500 flex items-center justify-center mx-auto">
-
-                  <span className="text-cyan-400 text-4xl font-bold">
-                    C
-                  </span>
-
+                  <span className="text-cyan-400 text-4xl font-bold">C</span>
                 </div>
 
-                <h2 className="text-4xl font-bold tracking-[10px] mt-6 text-white">
-                  CIRCLE
-                </h2>
-
-                <p className="text-slate-400 mt-3">
-                  Connect Beyond Distance
-                </p>
-
+                <p className="text-slate-400 mt-3">Connect Beyond Distance</p>
               </div>
-
             </div>
-
           </div>
-
         </div>
-
       </div>
     </section>
   );

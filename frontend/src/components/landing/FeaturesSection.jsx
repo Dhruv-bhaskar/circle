@@ -1,4 +1,3 @@
-// components/landing/FeaturesSection.jsx
 
 import {
   ShieldCheck,

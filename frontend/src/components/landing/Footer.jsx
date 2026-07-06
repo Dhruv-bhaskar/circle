@@ -11,7 +11,7 @@ const Footer = () => {
           {/* Logo */}
           <div>
             <div className="flex items-center gap-3">
-              <div className="size-11 rounded-full border border-cyan-400 flex items-center justify-center bg-slate-900">
+              <div className="size-11 rounded-full border border-cyan-400 flex items-center justify-center bg-cyan-500/10">
                 <span className="text-cyan-400 font-bold text-xl">
                   C
                 </span>

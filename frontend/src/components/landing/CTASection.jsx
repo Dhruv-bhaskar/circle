@@ -56,7 +56,7 @@ function CTASection() {
 
               <Link
                 to="/login"
-                className="btn btn-outline border-slate-600 text-white hover:bg-slate-800"
+                className="btn btn-outline border-slate-600 text-white hover:bg-blue-200/20 hover:text-white"
               >
                 Login
               </Link>
